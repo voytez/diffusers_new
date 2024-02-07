@@ -62,20 +62,20 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
 
             # increase this value to create a stronger `nfsw` filter
             # at the cost of increasing the possibility of filtering benign images
-            adjustment = 0.1
+            adjustment = 0.00
 
             for concept_idx in range(len(special_cos_dist[0])):
                 concept_cos = special_cos_dist[i][concept_idx]
                 concept_threshold = self.special_care_embeds_weights[concept_idx].item()
-                result_img["special_scores"][concept_idx] = round(concept_cos - concept_threshold - adjustment, 3)
+                result_img["special_scores"][concept_idx] = round(concept_cos - concept_threshold + adjustment, 3)
                 if result_img["special_scores"][concept_idx] > 0:
                     result_img["special_care"].append({concept_idx, result_img["special_scores"][concept_idx]})
-                    adjustment = 0.01
+                    adjustment = 0.005
 
             for concept_idx in range(len(cos_dist[0])):
                 concept_cos = cos_dist[i][concept_idx]
                 concept_threshold = self.concept_embeds_weights[concept_idx].item()
-                result_img["concept_scores"][concept_idx] = round(concept_cos - concept_threshold - adjustment, 3)
+                result_img["concept_scores"][concept_idx] = round(concept_cos - concept_threshold + adjustment, 3)
                 if result_img["concept_scores"][concept_idx] > 0:
                     result_img["bad_concepts"].append(concept_idx)
 
