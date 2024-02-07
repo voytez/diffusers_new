@@ -67,7 +67,7 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
             for concept_idx in range(len(special_cos_dist[0])):
                 concept_cos = special_cos_dist[i][concept_idx]
                 concept_threshold = self.special_care_embeds_weights[concept_idx].item()
-                result_img["special_scores"][concept_idx] = round(concept_cos - concept_threshold + adjustment, 3)
+                result_img["special_scores"][concept_idx] = round(concept_cos - concept_threshold - adjustment, 3)
                 if result_img["special_scores"][concept_idx] > 0:
                     result_img["special_care"].append({concept_idx, result_img["special_scores"][concept_idx]})
                     adjustment = 0.01
@@ -75,7 +75,7 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
             for concept_idx in range(len(cos_dist[0])):
                 concept_cos = cos_dist[i][concept_idx]
                 concept_threshold = self.concept_embeds_weights[concept_idx].item()
-                result_img["concept_scores"][concept_idx] = round(concept_cos - concept_threshold + adjustment, 3)
+                result_img["concept_scores"][concept_idx] = round(concept_cos - concept_threshold - adjustment, 3)
                 if result_img["concept_scores"][concept_idx] > 0:
                     result_img["bad_concepts"].append(concept_idx)
 
