@@ -62,7 +62,7 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
 
             # increase this value to create a stronger `nfsw` filter
             # at the cost of increasing the possibility of filtering benign images
-            adjustment = 0.0
+            adjustment = -0.1
 
             for concept_idx in range(len(special_cos_dist[0])):
                 concept_cos = special_cos_dist[i][concept_idx]
@@ -92,7 +92,7 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
 
         if any(has_nsfw_concepts):
             logger.warning(
-                "Potential NSFW content was detected in one or more images. A black image will be returned instead."
+                "My Custom Potential NSFW content was detected in one or more images. A black image will be returned instead."
                 " Try again with a different prompt and/or seed."
             )
 
@@ -108,7 +108,7 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
 
         # increase this value to create a stronger `nsfw` filter
         # at the cost of increasing the possibility of filtering benign images
-        adjustment = -0.05
+        adjustment = -0.1
 
         special_scores = special_cos_dist - self.special_care_embeds_weights + adjustment
         # special_scores = special_scores.round(decimals=3)
