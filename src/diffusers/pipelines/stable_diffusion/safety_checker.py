@@ -108,7 +108,7 @@ class StableDiffusionSafetyChecker(PreTrainedModel):
 
         # increase this value to create a stronger `nsfw` filter
         # at the cost of increasing the possibility of filtering benign images
-        adjustment = 0.0
+        adjustment = -0.15
 
         special_scores = special_cos_dist - self.special_care_embeds_weights + adjustment
         # special_scores = special_scores.round(decimals=3)
